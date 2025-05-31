@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Management Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #2e7d32, #4caf50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, rgba(0,0,0,0.03) 30%, rgba(0,0,0,0.08) 70%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            z-index: 0;
+            text-transform: uppercase;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+        }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            color: #2e7d32;
+            font-size: 1.8rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 1rem;
+            border-collapse: collapse;
+            position: relative;
+            z-index: 1;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .btn {
+            font-size: 1rem;
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            background: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #2e7d32;
+        }
+
+        .upload-section {
+            border: 2px dashed #4caf50;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section.highlight {
+            background-color: #e8f5e9;
+            border-color: #2e7d32;
+        }
+
+        .upload-section p {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .upload-section input {
+            display: none;
+        }
+
+        .blinking-arrow {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #2e7d32;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .upload-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .image-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 5px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .image-container:hover {
+            transform: scale(1.05);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-img {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .remove-img:hover {
+            background: rgba(255, 0, 0, 1);
+        }
+
+        .confirmation {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+        }
+
+        .confirmation label {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            border-color: #2e7d32;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background: #4caf50;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .submit-button:hover {
+            background: #2e7d32;
+        }
+
+        .photo-upload-container {
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .photo-category {
+            margin-bottom: 25px;
+        }
+
+        .photo-category h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .image-container {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="watermark">Waste Management</div>
+
+        <div class="logo-container">
+            <img src="images/jarlso.png" alt="Company Logo" class="logo">
+        </div>
+
+        <h1>WASTE MANAGEMENT CHECKLIST - WMS/WM/C001</h1>
+
+        <form id="wasteManagementForm" action="submit_waste_management.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="wasteCount" id="wasteCount" value="1">
+            <table id="wasteTable">
+                <thead>
+                    <tr>
+                        <th>WASTE TYPE</th>
+                        <th>ESTIMATED QUANTITY (kg)</th>
+                        <th>DISPOSAL METHOD</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select name="wasteType1" required>
+                                <option value="">Select Type</option>
+                                <option value="General">General Waste</option>
+                                <option value="Plastic">Plastic</option>
+                                <option value="Metal">Metal</option>
+                                <option value="Paper">Paper/Cardboard</option>
+                                <option value="Organic">Organic/Food</option>
+                                <option value="Hazardous">Hazardous</option>
+                                <option value="Electronic">Electronic</option>
+                                <option value="Construction">Construction</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </td>
+                        <td><input type="number" name="quantity1" required></td>
+                        <td>
+                            <select name="disposalMethod1" required>
+                                <option value="">Select Method</option>
+                                <option value="Landfill">Landfill</option>
+                                <option value="Recycling">Recycling</option>
+                                <option value="Composting">Composting</option>
+                                <option value="Incineration">Incineration</option>
+                                <option value="SpecialTreatment">Special Treatment</option>
+                            </select>
+                        </td>
+                        <td><button type="button" class="btn" onclick="removeRow(this)">Remove</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button type="button" class="btn" onclick="addRow()">Add Waste Type</button>
+
+            <div class="photo-upload-container">
+                <div class="photo-category">
+                    <h3>1. Photos of the Site BEFORE Waste Collection</h3>
+                    <div class="upload-section" id="beforeDropArea">
+                        <div class="blinking-arrow">⬇</div>
+                        <p>Drag & Drop Images Here or Click to Upload</p>
+                        <input type="file" id="beforeImageUpload" name="beforeImages[]" accept="image/*" multiple>
+                        <div class="upload-preview" id="beforePreview"></div>
+                    </div>
+                </div>
+
+                <div class="photo-category">
+                    <h3>2. Photos of the Site AFTER Waste Collection</h3>
+                    <div class="upload-section" id="afterDropArea">
+                        <div class="blinking-arrow">⬇</div>
+                        <p>Drag & Drop Images Here or Click to Upload</p>
+                        <input type="file" id="afterImageUpload" name="afterImages[]" accept="image/*" multiple>
+                        <div class="upload-preview" id="afterPreview"></div>
+                    </div>
+                </div>
+
+                <div class="photo-category">
+                    <h3>3. Photos of the Collection Area</h3>
+                    <div class="upload-section" id="collectionDropArea">
+                        <div class="blinking-arrow">⬇</div>
+                        <p>Drag & Drop Images Here or Click to Upload</p>
+                        <input type="file" id="collectionImageUpload" name="collectionImages[]" accept="image/*" multiple>
+                        <div class="upload-preview" id="collectionPreview"></div>
+                    </div>
+                </div>
+
+                <div class="photo-category">
+                    <h3>4. Photos of Waste Disposal Method</h3>
+                    <div class="upload-section" id="disposalDropArea">
+                        <div class="blinking-arrow">⬇</div>
+                        <p>Drag & Drop Images Here or Click to Upload</p>
+                        <input type="file" id="disposalImageUpload" name="disposalImages[]" accept="image/*" multiple>
+                        <div class="upload-preview" id="disposalPreview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="confirmation">
+                <p><strong>Site Location</strong></p>
+                <input type="text" id="siteLocation" name="siteLocation" placeholder="Enter Site Location" required>
+
+                <p><strong>Collection Date</strong></p>
+                <input type="date" id="collectionDate" name="collectionDate" required>
+
+                <p><strong>Team Information</strong></p>
+                <label for="teamLead">Team Leader:</label>
+                <input type="text" id="teamLead" name="teamLead" required>
+                
+                <label for="teamSize">Team Size:</label>
+                <input type="number" id="teamSize" name="teamSize" min="1" required>
+
+                <p><strong>Confirmed & Submitted By:</strong></p>
+                <label for="confirmName">Name:</label>
+                <input type="text" id="confirmName" name="confirmName" required>
+                <label for="confirmDate">Date:</label>
+                <input type="date" id="confirmDate" name="confirmDate" required>
+            </div>
+            
+            <button type="submit" class="submit-button">Submit Waste Management Report</button>
+        </form>
+    </div>
+
+    <script>
+        // Auto-fill date fields with current date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('collectionDate').value = today;
+            document.getElementById('confirmDate').value = today;
+            
+            // Initialize all photo upload areas
+            setupPhotoUpload('beforeDropArea', 'beforeImageUpload', 'beforePreview');
+            setupPhotoUpload('afterDropArea', 'afterImageUpload', 'afterPreview');
+            setupPhotoUpload('collectionDropArea', 'collectionImageUpload', 'collectionPreview');
+            setupPhotoUpload('disposalDropArea', 'disposalImageUpload', 'disposalPreview');
+            
+            // Initialize form submission handler
+            document.getElementById('wasteManagementForm').addEventListener('submit', function(e) {
+                // Validate form
+                if (!validateForm()) {
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Update waste count
+                document.getElementById('wasteCount').value = document.querySelectorAll('#wasteTable tbody tr').length;
+                
+                // Allow form to submit naturally
+                return true;
+            });
+        });
+
+        // Function to handle adding new rows
+        function addRow() {
+            const tbody = document.querySelector('#wasteTable tbody');
+            const rowCount = tbody.children.length;
+            const newRow = document.createElement('tr');
+            
+            newRow.innerHTML = `
+                <td>
+                    <select name="wasteType${rowCount + 1}" required>
+                        <option value="">Select Type</option>
+                        <option value="General">General Waste</option>
+                        <option value="Plastic">Plastic</option>
+                        <option value="Metal">Metal</option>
+                        <option value="Paper">Paper/Cardboard</option>
+                        <option value="Organic">Organic/Food</option>
+                        <option value="Hazardous">Hazardous</option>
+                        <option value="Electronic">Electronic</option>
+                        <option value="Construction">Construction</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </td>
+                <td><input type="number" name="quantity${rowCount + 1}" required></td>
+                <td>
+                    <select name="disposalMethod${rowCount + 1}" required>
+                        <option value="">Select Method</option>
+                        <option value="Landfill">Landfill</option>
+                        <option value="Recycling">Recycling</option>
+                        <option value="Composting">Composting</option>
+                        <option value="Incineration">Incineration</option>
+                        <option value="SpecialTreatment">Special Treatment</option>
+                    </select>
+                </td>
+                <td><button type="button" class="btn" onclick="removeRow(this)">Remove</button></td>
+            `;
+            
+            tbody.appendChild(newRow);
+        }
+
+        // Function to remove rows
+        function removeRow(button) {
+            const tbody = document.querySelector('#wasteTable tbody');
+            if (tbody.children.length > 1) {
+                button.closest('tr').remove();
+            } else {
+                showMessage('Cannot remove the last row', false);
+            }
+        }
+
+        // Show message function
+        function showMessage(message, isSuccess) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `alert ${isSuccess ? 'alert-success' : 'alert-danger'}`;
+            messageDiv.textContent = message;
+            
+            const container = document.querySelector('.container');
+            container.insertBefore(messageDiv, container.firstChild);
+            
+            setTimeout(() => messageDiv.remove(), 5000);
+        }
+
+        // Setup drag and drop for each photo category
+        function setupPhotoUpload(dropAreaId, inputId, previewId) {
+            const dropArea = document.getElementById(dropAreaId);
+            const imageUpload = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.add('highlight'), false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, () => dropArea.classList.remove('highlight'), false);
+            });
+
+            dropArea.addEventListener('drop', handleDrop, false);
+            imageUpload.addEventListener('change', () => handleFiles(imageUpload.files));
+            dropArea.addEventListener('click', () => imageUpload.click());
+
+            function handleDrop(e) {
+                handleFiles(e.dataTransfer.files);
+            }
+
+            function handleFiles(files) {
+                [...files].forEach(file => {
+                    if (validateFile(file)) {
+                        previewFile(file, preview);
+                    }
+                });
+            }
+        }
+
+        function validateFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showMessage(`${file.name} is not an image file`, false);
+                return false;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage(`${file.name} is too large (max 5MB)`, false);
+                return false;
+            }
+            return true;
+        }
+
+        function previewFile(file, previewElement) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            
+            reader.onload = function() {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'image-container';
+                
+                const img = document.createElement('img');
+                img.src = reader.result;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-img';
+                removeBtn.innerHTML = '×';
+                removeBtn.onclick = function(e) {
+                    e.preventDefault();
+                    imgContainer.remove();
+                };
+                
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(removeBtn);
+                previewElement.appendChild(imgContainer);
+            };
+        }
+
+        // Validate form before submission
+        function validateForm() {
+            // Check if at least one waste type is entered
+            const wasteRows = document.querySelectorAll('#wasteTable tbody tr');
+            if (wasteRows.length === 0) {
+                showMessage('Please add at least one waste type', false);
+                return false;
+            }
+            
+            // Validate that photos are uploaded for each category
+            const photoCategories = [
+                {id: 'beforePreview', name: 'before collection'},
+                {id: 'afterPreview', name: 'after collection'},
+                {id: 'collectionPreview', name: 'collection area'},
+                {id: 'disposalPreview', name: 'disposal method'}
+            ];
+            
+            let missingPhotos = [];
+            photoCategories.forEach(category => {
+                if (document.getElementById(category.id).children.length === 0) {
+                    missingPhotos.push(category.name);
+                }
+            });
+            
+            if (missingPhotos.length > 0) {
+                showMessage(`Please upload photos for: ${missingPhotos.join(', ')}`, false);
+                return false;
+            }
+            
+            return true;
+        }
+    </script>
+</body>
+</html>

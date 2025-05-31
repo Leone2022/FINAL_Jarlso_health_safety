@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox Meeting Form and Pre-Activity Debrief</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: rgb(26, 3, 3);
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 1000px;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.03) 30%, rgba(0, 0, 0, 0.08) 70%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            z-index: 0;
+            text-transform: uppercase;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* Logo Container */
+        .logo-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 120px;
+            height: auto;
+        }
+
+        h1,
+        h2 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #1e3c72;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(30, 60, 114, 0.1);
+        }
+
+        table {
+            width: 100%;
+            margin-bottom: 1rem;
+            border-collapse: collapse;
+            position: relative;
+            z-index: 1;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #1e3c72;
+            color: white;
+            font-weight: 500;
+        }
+
+        td input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Radio button styling */
+        input[type="radio"] {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        td input[type="radio"] {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .btn {
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            background: #093561;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #1e3c72;
+            transform: translateY(-1px);
+        }
+
+        /* Enhanced Image Upload Area */
+        .upload-section {
+            border: 2px dashed #2a5298;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            background: #f8f9fa;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section.highlight {
+            background-color: #e3f2fd;
+            border-color: #1e3c72;
+        }
+
+        .upload-section p {
+            color: #2a5298;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .upload-section input {
+            display: none;
+        }
+
+        .blinking-arrow {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #2a5298;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .upload-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .image-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .image-container:hover {
+            transform: scale(1.05);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-img {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .remove-img:hover {
+            background: rgba(255, 0, 0, 1);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 12px;
+            background: #2a5298;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            margin-top: 20px;
+        }
+
+        .submit-button:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+        }
+
+        /* Response Message Styles */
+        .response-message {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Field error indication */
+        .error {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .submit-button,
+            .btn,
+            .upload-section {
+                display: none;
+            }
+
+            .watermark {
+                opacity: 0.1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.3rem;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .image-container {
+                width: 100px;
+                height: 100px;
+            }
+
+            .watermark {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+
+            .upload-section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Watermark -->
+        <div class="watermark">Jarlso Health and Safety</div>
+
+        <!-- Logo -->
+        <div class="logo-container">
+            <img src="images/jarlso.png" alt="Company Logo" class="logo">
+        </div>
+
+        <h1>Toolbox Meeting Form and Pre-Activity Debrief</h1>
+        <form id="toolboxForm" action="submit_toolbox.php" method="post" enctype="multipart/form-data">
+            <!-- Site Information -->
+            <div class="form-group">
+                <label for="siteID">Site ID:</label>
+                <input type="text" id="siteID" name="siteID" required>
+            </div>
+            <div class="form-group">
+                <label for="siteName">Site Name:</label>
+                <input type="text" id="siteName" name="siteName" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <!-- Attendance -->
+            <h2>ATTENDANCE</h2>
+            <table id="attendance">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Role (Position)</th>
+                        <th>Contact no.</th>
+                        <th>Signature</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input type="text" name="name1" required></td>
+                        <td><input type="text" name="role1" required></td>
+                        <td><input type="text" name="contact1" required></td>
+                        <td><input type="text" name="signature1" required></td>
+                        <td><button type="button" class="btn" onclick="removeRow(this)">Remove</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" class="btn" onclick="addRow()">Add Row</button>
+
+            <!-- Activity for the Day -->
+            <div class="form-group">
+                <label for="activityDetails">Activity for the Day:</label>
+                <textarea id="activityDetails" name="activityDetails" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="toolboxDetails">Details of the Toolbox Meeting:</label>
+                <textarea id="toolboxDetails" name="toolboxDetails" rows="4" required></textarea>
+            </div>
+
+            <!-- PPE Verification -->
+            <h2>Verification of Critical PPEs & Certificate of Workers on Site</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>PPEs</th>
+                        <th>Yes</th>
+                        <th>No</th>
+                        <th>N/A</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Safety Boot</td>
+                        <td><input type="radio" name="safetyBoot" value="Yes" required></td>
+                        <td><input type="radio" name="safetyBoot" value="No"></td>
+                        <td><input type="radio" name="safetyBoot" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Helmet</td>
+                        <td><input type="radio" name="helmet" value="Yes" required></td>
+                        <td><input type="radio" name="helmet" value="No"></td>
+                        <td><input type="radio" name="helmet" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Reflective Jacket</td>
+                        <td><input type="radio" name="reflectiveJacket" value="Yes" required></td>
+                        <td><input type="radio" name="reflectiveJacket" value="No"></td>
+                        <td><input type="radio" name="reflectiveJacket" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Full Body Harness</td>
+                        <td><input type="radio" name="fullBodyHarness" value="Yes" required></td>
+                        <td><input type="radio" name="fullBodyHarness" value="No"></td>
+                        <td><input type="radio" name="fullBodyHarness" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Rescue Kits Available on Site</td>
+                        <td><input type="radio" name="rescueKits" value="Yes" required></td>
+                        <td><input type="radio" name="rescueKits" value="No"></td>
+                        <td><input type="radio" name="rescueKits" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>Hand Gloves</td>
+                        <td><input type="radio" name="handGloves" value="Yes" required></td>
+                        <td><input type="radio" name="handGloves" value="No"></td>
+                        <td><input type="radio" name="handGloves" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>Nose Mask</td>
+                        <td><input type="radio" name="noseMask" value="Yes" required></td>
+                        <td><input type="radio" name="noseMask" value="No"></td>
+                        <td><input type="radio" name="noseMask" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Ear Plugs</td>
+                        <td><input type="radio" name="earPlugs" value="Yes" required></td>
+                        <td><input type="radio" name="earPlugs" value="No"></td>
+                        <td><input type="radio" name="earPlugs" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td>Other PPEs as Stated in the Method Statement and Risk Assessment</td>
+                        <td><input type="radio" name="otherPPEs" value="Yes" required></td>
+                        <td><input type="radio" name="otherPPEs" value="No"></td>
+                        <td><input type="radio" name="otherPPEs" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>Riggers on Site Are Certified</td>
+                        <td><input type="radio" name="riggersCertified" value="Yes" required></td>
+                        <td><input type="radio" name="riggersCertified" value="No"></td>
+                        <td><input type="radio" name="riggersCertified" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>11</td>
+                        <td>First Aider(s) on Site Is Certified</td>
+                        <td><input type="radio" name="firstAidersCertified" value="Yes" required></td>
+                        <td><input type="radio" name="firstAidersCertified" value="No"></td>
+                        <td><input type="radio" name="firstAidersCertified" value="N/A"></td>
+                    </tr>
+                    <tr>
+                        <td>12</td>
+                        <td>First Aid Kits Are Available on Site</td>
+                        <td><input type="radio" name="firstAidKits" value="Yes" required></td>
+                        <td><input type="radio" name="firstAidKits" value="No"></td>
+                        <td><input type="radio" name="firstAidKits" value="N/A"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Declaration -->
+            <h2>Declaration</h2>
+            <div class="form-group">
+                <label for="declarationName">I</label>
+                <input type="text" id="declarationName" name="declarationName" required
+                    placeholder="Enter your full name">
+                <label for="declaration">have thoroughly discussed all potential risks associated with today's
+                    activities on site and all mitigations have been communicated clearly with all persons working on
+                    the site. The same will be done with any other person who comes to perform any other activities
+                    under my control.</label>
+            </div>
+            <div class="form-group">
+                <label for="declarationSignature">Signature:</label>
+                <input type="text" id="declarationSignature" name="declarationSignature" required>
+            </div>
+            <div class="form-group">
+                <label for="declarationDate">Date:</label>
+                <input type="date" id="declarationDate" name="declarationDate" required>
+            </div>
+
+            <!-- Supporting Pictures -->
+            <h2>Upload Supporting Pictures</h2>
+            <div class="upload-section" id="dropArea">
+                <div class="blinking-arrow">⬇</div>
+                <p>Drag & Drop Images Here or Click to Upload</p>
+                <input type="file" id="imageUpload" name="images[]" accept="image/*" multiple>
+                <div class="upload-preview" id="preview"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-button">Submit Form</button>
+        </form>
+    </div>
+
+    <script src="toolbox.js"></script>
+</body>
+
+</html>

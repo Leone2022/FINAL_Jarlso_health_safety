@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarlso Health & Safety | Team Leader Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary-color: #1e3c72; /* Dark blue */
+            --primary-light: #2a5298; /* Medium dark blue */
+            --primary-dark: #0F2942; /* Very dark blue */
+            --accent-color: #E53E3E; /* Complementary red accent */
+            --text-light: #F0F8FF;
+            --text-dark: #2D3748;
+            --bg-light: #FFFFFF;
+            --bg-grey: #F7FAFC;
+            --input-border: #CBD5E0;
+            --box-shadow: 0 10px 25px rgba(30, 60, 114, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .portal-container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--bg-light);
+            border-radius: 12px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .portal-header {
+            background: var(--primary-color);
+            padding: 25px 20px;
+            text-align: center;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .brand-logo i {
+            font-size: 30px;
+            color: var(--primary-color);
+        }
+
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .portal-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .team-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        .portal-content {
+            padding: 30px;
+        }
+
+        .form-container {
+            transition: var(--transition);
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .form-container.hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            background-color: var(--bg-grey);
+            color: var(--text-dark);
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+            outline: none;
+            background-color: var(--bg-light);
+        }
+
+        .input-group input::placeholder {
+            color: #718096;
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-button:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.2);
+        }
+
+        .form-button:active {
+            transform: translateY(0);
+        }
+
+        .toggle-link {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            text-align: center;
+            cursor: pointer;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .toggle-link:hover {
+            color: var(--primary-light);
+        }
+
+        .toggle-link strong {
+            font-weight: 600;
+            text-decoration: underline;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+        }
+
+        .form-divider::before,
+        .form-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--input-border);
+        }
+
+        .form-divider span {
+            padding: 0 10px;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .forgot-password {
+            text-align: right;
+            font-size: 0.85rem;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .forgot-password a:hover {
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+
+        .form-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #718096;
+        }
+
+        .form-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Form validation styles */
+        .input-group.error input {
+            border-color: var(--accent-color);
+            background-color: rgba(229, 62, 62, 0.05);
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .input-group.error .error-message {
+            display: block;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .portal-container {
+                border-radius: 10px;
+            }
+            
+            .portal-content {
+                padding: 20px;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+            
+            .input-group input {
+                padding: 12px 15px 12px 40px;
+            }
+            
+            .brand-logo {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .brand-name {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-container">
+        <div class="portal-header">
+            <a href="index.php" class="back-link">
+                <i class="fas fa-arrow-left"></i> Home
+            </a>
+            <div class="brand-logo">
+                <i class="fas fa-hard-hat"></i>
+            </div>
+            <h1 class="brand-name">Jarlso H&S</h1>
+            <p class="portal-subtitle">Health & Safety Management System</p>
+            <div class="team-badge">Team Leader Access</div>
+        </div>
+        
+        <div class="portal-content">
+            <!-- Login Form -->
+            <div id="loginForm" class="form-container animate-in">
+                <h2 class="form-title">Team Leader Login</h2>
+                
+                <form method="post" action="tl_login.php" id="loginFormElement">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" id="loginEmail" placeholder="Your Email Address" required>
+                        <p class="error-message">Please enter a valid email address</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" id="loginPassword" placeholder="Your Password" required>
+                        <i class="fas fa-eye password-toggle" id="toggleLoginPassword"></i>
+                        <p class="error-message">Password is required</p>
+                    </div>
+                    
+                    <div class="forgot-password">
+                        <a href="reset_password.php">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="form-button">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+                
+                <div class="form-divider">
+                    <span>OR</span>
+                </div>
+                
+                <p class="toggle-link" onclick="toggleForms()">
+                    Don't have an account? <strong>Register Now</strong>
+                </p>
+                
+                <div class="form-footer">
+                    <p>By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+                </div>
+            </div>
+
+            <!-- Registration Form -->
+            <div id="registerForm" class="form-container hidden">
+                <h2 class="form-title">Create Account</h2>
+                
+                <form method="post" action="register_team_leader.php" id="registerFormElement">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="fName" id="firstName" placeholder="First Name" required>
+                        <p class="error-message">First name is required</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="lName" id="lastName" placeholder="Last Name" required>
+                        <p class="error-message">Last name is required</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" id="registerEmail" placeholder="Email Address" required>
+                        <p class="error-message">Please enter a valid email address</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-building"></i>
+                        <input type="text" name="siteName" id="siteName" placeholder="Site Name" required>
+                        <p class="error-message">Site name is required</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-hashtag"></i>
+                        <input type="text" name="siteNumber" id="siteNumber" placeholder="Site Number" required>
+                        <p class="error-message">Site number is required</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" id="registerPassword" placeholder="Create Password" required>
+                        <i class="fas fa-eye password-toggle" id="toggleRegisterPassword"></i>
+                        <p class="error-message">Password must be at least 8 characters</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
+                        <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
+                        <p class="error-message">Passwords do not match</p>
+                    </div>
+                    
+                    <button type="submit" class="form-button">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                
+                <div class="form-divider">
+                    <span>OR</span>
+                </div>
+                
+                <p class="toggle-link" onclick="toggleForms()">
+                    Already have an account? <strong>Sign In</strong>
+                </p>
+                
+                <div class="form-footer">
+                    <p>By registering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle between login and registration forms
+        function toggleForms() {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            // Add animation class
+            if (loginForm.classList.contains('hidden')) {
+                loginForm.classList.remove('hidden');
+                loginForm.classList.add('animate-in');
+                registerForm.classList.add('hidden');
+                registerForm.classList.remove('animate-in');
+            } else {
+                registerForm.classList.remove('hidden');
+                registerForm.classList.add('animate-in');
+                loginForm.classList.add('hidden');
+                loginForm.classList.remove('animate-in');
+            }
+        }
+        
+        // Toggle password visibility
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password toggle functionality for login form
+            const toggleLoginPassword = document.getElementById('toggleLoginPassword');
+            const loginPassword = document.getElementById('loginPassword');
+            
+            if (toggleLoginPassword && loginPassword) {
+                toggleLoginPassword.addEventListener('click', function() {
+                    const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    loginPassword.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
+            
+            // Password toggle functionality for register form
+            const toggleRegisterPassword = document.getElementById('toggleRegisterPassword');
+            const registerPassword = document.getElementById('registerPassword');
+            
+            if (toggleRegisterPassword && registerPassword) {
+                toggleRegisterPassword.addEventListener('click', function() {
+                    const type = registerPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    registerPassword.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
+            
+            // Password toggle functionality for confirm password
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+            
+            if (toggleConfirmPassword && confirmPassword) {
+                toggleConfirmPassword.addEventListener('click', function() {
+                    const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                    confirmPassword.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
+            
+            // Form validation for login form
+            const loginFormElement = document.getElementById('loginFormElement');
+            
+            if (loginFormElement) {
+                loginFormElement.addEventListener('submit', function(event) {
+                    let valid = true;
+                    
+                    // Validate email
+                    const emailInput = document.getElementById('loginEmail');
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    
+                    if (!emailPattern.test(emailInput.value)) {
+                        emailInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        emailInput.parentElement.classList.remove('error');
+                    }
+                    
+                    // Validate password
+                    const passwordInput = document.getElementById('loginPassword');
+                    if (passwordInput.value.trim() === '') {
+                        passwordInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        passwordInput.parentElement.classList.remove('error');
+                    }
+                    
+                    if (!valid) {
+                        event.preventDefault();
+                    }
+                });
+            }
+            
+            // Form validation for registration form
+            const registerFormElement = document.getElementById('registerFormElement');
+            
+            if (registerFormElement) {
+                registerFormElement.addEventListener('submit', function(event) {
+                    let valid = true;
+                    
+                    // Validate first name
+                    const firstNameInput = document.getElementById('firstName');
+                    if (firstNameInput.value.trim() === '') {
+                        firstNameInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        firstNameInput.parentElement.classList.remove('error');
+                    }
+                    
+                    // Validate last name
+                    const lastNameInput = document.getElementById('lastName');
+                    if (lastNameInput.value.trim() === '') {
+                        lastNameInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        lastNameInput.parentElement.classList.remove('error');
+                    }
+                    
+                    // Validate email
+                    const emailInput = document.getElementById('registerEmail');
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    
+                    if (!emailPattern.test(emailInput.value)) {
+                        emailInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        emailInput.parentElement.classList.remove('error');
+                    }
+                    
+                    // Validate site name
+                    const siteNameInput = document.getElementById('siteName');
+                    if (siteNameInput.value.trim() === '') {
+                        siteNameInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        siteNameInput.parentElement.classList.remove('error');
+                    }
+                    
+                    // Validate site number
+                    const siteNumberInput = document.getElementById('siteNumber');
+                    if (siteNumberInput.value.trim() === '') {
+                        siteNumberInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        siteNumberInput.parentElement.classList.remove('error');
+                    }
+                    
+                    // Validate password
+                    const passwordInput = document.getElementById('registerPassword');
+                    if (passwordInput.value.length < 8) {
+                        passwordInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        passwordInput.parentElement.classList.remove('error');
+                    }
+                    
+                    // Validate confirm password
+                    const confirmPasswordInput = document.getElementById('confirmPassword');
+                    if (confirmPasswordInput.value !== passwordInput.value) {
+                        confirmPasswordInput.parentElement.classList.add('error');
+                        valid = false;
+                    } else {
+                        confirmPasswordInput.parentElement.classList.remove('error');
+                    }
+                    
+                    if (!valid) {
+                        event.preventDefault();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
